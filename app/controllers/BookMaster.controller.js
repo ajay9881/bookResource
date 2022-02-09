@@ -6,9 +6,7 @@ var fs = require('fs');
 const genericHelper = require("../helpers/generic.helper");
 ///create book
 exports.addbook = async (req, res) => {
- // response = req.body;
 
- 
   try {
 
     if(!req.files){
@@ -16,10 +14,8 @@ exports.addbook = async (req, res) => {
       return res.status(500).send({
         status: false,
         message: 'bookImg Field Cannot Be Empty',
-       
       });
     }
-
     let bookImg = req.files.bookImg;
     response = { 
       bookName:req.body.bookName,
@@ -28,11 +24,9 @@ exports.addbook = async (req, res) => {
       price:req.body.price,
       bookImg: bookImg.name 
     }
-
     bookImg.mv("./bookImg/" + bookImg.name, function (err) {
       if (err) return res.status(500).send(err);
     });
-        
     var book = new bookMasterModel(response);
     await book
       .save()
@@ -58,9 +52,6 @@ exports.fetchbookList = async (req, res) => {
   if (req.query.bookRefId) {
     findquery['_id'] =req.query.bookRefId;
   }
-  
-  console.log(findquery);
-
   try {
     let getbookList = await bookMasterService.getbookValue(findquery);
     if (!getbookList.status) {
@@ -87,10 +78,6 @@ exports.fetchbookList = async (req, res) => {
   }
 };
 
-// ////fetch data Of perticular book
-
-
-
 // ////update book details
 
 exports.updatebookById = async (req, res) => {
@@ -109,12 +96,11 @@ exports.updatebookById = async (req, res) => {
   fs.unlink("./bookImg/" + getbookList.data[0].bookImg, function (err) {
     if (err) return res.status(500).send(err);
   });
-
-  //remove previous image
+//remove previous image
+  
 
   
-   bookImg = req.files.bookImg;
-  
+let bookImg = req.files.bookImg;
   response = { 
     bookName:req.body.bookName,
     author:req.body.author,
@@ -133,7 +119,7 @@ exports.updatebookById = async (req, res) => {
       findquery,
       response
     );
-    console.log("Updated data of book ", updatebookDetail.data);
+   
     if (!updatebookDetail.status) {
       return res.status(500).send({
         status: false,
@@ -156,7 +142,7 @@ exports.updatebookById = async (req, res) => {
     // /**success response */
     return res.status(200).send({
       status: true,
-      message: "updated successfully By Id",
+      message: "updated successfully",
       data: updatebookDetail.data,
       length: updatebookDetail.data.length,
     });
@@ -169,14 +155,13 @@ exports.updatebookById = async (req, res) => {
 exports.DeletebookById = async (req, res) => {
   let findquery = {  };
  findquery['_id'] = req.query.bookRefId;
- let getbookList = await bookMasterService.getbookValue(findquery);
- fs.unlink("./bookImg/" + getbookList.data[0].bookImg, function (err) {
-   if (err) return res.status(500).send(err);
- });
-  
-   
-
+ 
   try {
+    let getbookList = await bookMasterService.getbookValue(findquery);
+    fs.unlink("./bookImg/" + getbookList.data[0].bookImg, function (err) {
+      if (err) return res.status(500).send(err);
+    });
+
     let deletebookDetail = await bookMasterService.deletebookDetails(findquery);
     console.log("delete data of book ", deletebookDetail.data);
     if (!deletebookDetail.status) {

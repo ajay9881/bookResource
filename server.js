@@ -8,9 +8,6 @@ const upload = require("express-fileupload");
 
 const app = express();
 
- 
-
-
 app.use(upload());
 app.use(bodyParser.urlencoded({ limit: '100mb' }));
 
@@ -34,11 +31,9 @@ app.use(function (req, res, next) {
   next();
 });
 app.set("view engine", "jade");
-
 app.use(express.static(path.join(__dirname, "public")));
 
 const mongoose = require("mongoose");
-
 mongoose.Promise = global.Promise;
 
 
@@ -55,7 +50,5 @@ mongoose
 app.listen(config.serverPort, () => {
   console.log("Server is listening on port ", config.serverPort);
 });
-
-
 
 module.exports = app;
