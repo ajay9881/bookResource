@@ -1,4 +1,17 @@
 # bookResource
+to clone the code https://github.com/ajay9881/bookResource.git
+copy the above link 
+steps
+1) git clone https://github.com/ajay9881/bookResource.git
+2) git cd bookResource
+3) git checkout main
+4) git pull origin main
+5) npm install
+6) npm start
+
+once you successfully done with the above steps you can start accessing the apis
+
+To access the api, Use postman app.
 
 use this api to login 
 method: Post
